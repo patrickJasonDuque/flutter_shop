@@ -15,16 +15,28 @@ class ProductDetail extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).accentColor,
         appBar: AppBar(
           title: Text(
             productItem.title,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        body: Container(
-          color: Theme.of(context).accentColor,
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Image.network(
+                  productItem.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 10,),
+              
+            ],
+          ),
         ),
       ),
     );
