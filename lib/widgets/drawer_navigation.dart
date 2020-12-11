@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/user_products.dart';
 import '../screens/orders.dart';
 import '../screens/products_overview.dart';
 
@@ -27,7 +28,7 @@ class DrawerNavigation extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(ctx).primaryColorDark),
             ),
@@ -57,6 +58,14 @@ class DrawerNavigation extends StatelessWidget {
             ),
             buildDrawerItem(context, 'Orders', Icons.shopping_bag, () {
               Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
+            }),
+            Divider(
+              color: Theme.of(context).accentColor,
+              thickness: 2,
+            ),
+            buildDrawerItem(context, 'Manage Products', Icons.category, () {
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductsScreen.routeName);
             }),
             Divider(
               color: Theme.of(context).accentColor,
