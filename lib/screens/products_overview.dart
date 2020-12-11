@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // Widget
 import '../widgets/products_grid.dart';
 import '../widgets/badge.dart';
+import '../widgets/drawer_navigation.dart';
 
 import '../providers/cart.dart';
 import './cart.dart';
@@ -11,7 +12,7 @@ import './cart.dart';
 enum FilterOptions { Favorites, All }
 
 class ProductsOverview extends StatefulWidget {
-  static const routeName = '/products-overview';
+  static const routeName = '/';
 
   ProductsOverview({Key key}) : super(key: key);
 
@@ -28,6 +29,7 @@ class _ProductsOverviewState extends State<ProductsOverview> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: DrawerNavigation(),
         appBar: AppBar(
           title: Text('Products', style: Theme.of(context).textTheme.headline6),
           actions: <Widget>[
