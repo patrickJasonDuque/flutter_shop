@@ -25,6 +25,12 @@ class _ProductsOverviewState extends State<ProductsOverview> {
   void _displayFavorites() => setState(() => _showFavorites = true);
   void _displayAll() => setState(() => _showFavorites = false);
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Scaffold.of(context).removeCurrentSnackBar();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

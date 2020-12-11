@@ -22,7 +22,7 @@ class OrderScreen extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemBuilder: (BuildContext ctx, int i) => OrderItem(),
+        itemBuilder: (BuildContext ctx, int i) => OrderItem(amount: orderData.orders[i].amount, date: orderData.orders[i].dateTime, products: orderData.orders[i].products),
         itemCount: orderData.orders.length,
       ),
       backgroundColor: Theme.of(context).accentColor,

@@ -44,38 +44,24 @@ class DrawerNavigation extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              color: Theme.of(context).accentColor,
-              height: MediaQuery.of(context).size.height * .2,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.shopping_basket_outlined,
-                        size: 40, color: Theme.of(context).primaryColorDark),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Shop Now',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            AppBar(
+              automaticallyImplyLeading: false,
             ),
-            buildDrawerItem(context, 'Products', Icons.category, () {
+            buildDrawerItem(context, 'Products', Icons.shop, () {
               Navigator.of(context)
                   .pushReplacementNamed(ProductsOverview.routeName);
             }),
+            Divider(
+              color: Theme.of(context).accentColor,
+              thickness: 2,
+            ),
             buildDrawerItem(context, 'Orders', Icons.shopping_bag, () {
               Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
-            })
+            }),
+            Divider(
+              color: Theme.of(context).accentColor,
+              thickness: 2,
+            ),
           ],
         ),
       ),

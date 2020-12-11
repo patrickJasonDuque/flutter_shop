@@ -13,6 +13,19 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final productData = Provider.of<Product>(context, listen: false);
     final cartData = Provider.of<Cart>(context, listen: false);
+    final snackbar = SnackBar(
+      content: Text(
+        'Added to cart',
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 1),
+      action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            cartData.subtractItemQuantity(productData.id);
+            Scaffold.of(context).hideCurrentSnackBar();
+          }),
+    );
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -48,8 +61,10 @@ class ProductItem extends StatelessWidget {
             color: Theme.of(context).accentColor,
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              cartData.addItem(context, productData.id, productData.price,
-                  productData.title);
+              Scaffold.of(context).hideCurrentSnackBar();
+              cartData.addItem(
+                  productData.id, productData.price, productData.title);
+              Scaffold.of(context).showSnackBar(snackbar);
             },
           ),
         ),

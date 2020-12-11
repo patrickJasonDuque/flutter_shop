@@ -22,8 +22,7 @@ class Cart with ChangeNotifier {
     return total;
   }
 
-  void addItem(
-      BuildContext context, String productId, double price, String title) {
+  void addItem(String productId, double price, String title) {
     if (_items.containsKey(productId)) {
       _items[productId].quantity++;
     } else {
@@ -36,25 +35,10 @@ class Cart with ChangeNotifier {
             quantity: 1),
       );
     }
-    final snackbar = SnackBar(
-      content: Text(
-        'Added to cart',
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 2),
-      action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            subtractItemQuantity(productId);
-            Scaffold.of(context).hideCurrentSnackBar();
-          }),
-    );
-
-    Scaffold.of(context).showSnackBar(snackbar);
     notifyListeners();
   }
 
-  void subtractItemQuantity(productId) {
+  void subtractItemQuantity(String productId) {
     if (_items[productId].quantity >= 2) {
       _items[productId].quantity--;
     } else {
@@ -63,12 +47,12 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void addItemQuantity(productId) {
+  void addItemQuantity(String productId) {
     _items[productId].quantity++;
     notifyListeners();
   }
 
-  void removeItem(productId) {
+  void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }
