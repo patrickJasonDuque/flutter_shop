@@ -33,8 +33,27 @@ class Products with ChangeNotifier {
   List<Product> get favoriteItems =>
       [..._items.where((item) => item.isFavorite)];
 
-  void addProduct(value) {
-    // _items.add(value);
+  void addProduct(Product product) {
+    final Product newProduct = Product(
+        description: product.description,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: DateTime.now().toString());
+
+    _items.add(newProduct);
+    notifyListeners();
+  }
+
+  void updateProduct(Product prod) {
+    final Product editedProd = Product(
+        description: prod.description,
+        title: prod.title,
+        price: prod.price,
+        imageUrl: prod.imageUrl,
+        id: prod.id);
+
+    _items[_items.indexWhere((item) => item.id == prod.id)] = editedProd;
     notifyListeners();
   }
 

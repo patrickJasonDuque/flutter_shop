@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
 
+import './add_product.dart';
+
 import '../widgets/user_product_item.dart';
 import '../widgets/drawer_navigation.dart';
 
@@ -25,14 +27,15 @@ class UserProductsScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddProductScreen.routeName);
+            },
           ),
         ],
       ),
       body: ListView.builder(
         itemBuilder: (_, int i) => UserProductItem(
-          imageUrl: productItems[i].imageUrl,
-          title: productItems[i].title,
+          product: productItems[i],
         ),
         itemCount: productItems.length,
       ),
