@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
 class Products with ChangeNotifier {
+  final String _baseUrl = 'https://flutter-test-f6e94.firebaseio.com';
+
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -33,16 +38,32 @@ class Products with ChangeNotifier {
   List<Product> get favoriteItems =>
       [..._items.where((item) => item.isFavorite)];
 
-  void addProduct(Product product) {
-    final Product newProduct = Product(
-        description: product.description,
-        title: product.title,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        id: DateTime.now().toString());
+  Future<void> addProduct(Product product) async {
+    const String url = '/products.jn';
 
-    _items.add(newProduct);
-    notifyListeners();
+    try {
+      var response = await http.post(_baseUrl + url,
+          body: jsonEncode({
+            'title': product.title,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+            'description': product.description,
+          }));
+
+      final Product newProduct = Product(
+          description: product.description,
+          title: product.title,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          id: jsonDecode(response.body)['name']);
+
+      _items.add(newProduct);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
   }
 
   void updateProduct(Product prod) {
@@ -57,9 +78,18 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
-    notifyListeners();
+  Future<void> deleteProduct(String id) async {
+    const String url = '/products';
+
+    try {
+      await http.delete(_baseUrl + url + '/$id.json');
+
+      _items.removeWhere((prod) => prod.id == id);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
   }
 
   Product findById(id) {
