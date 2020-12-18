@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/error_dialog.dart';
+
 import '../providers/products.dart';
 import '../providers/product.dart';
 
@@ -66,17 +68,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } catch (error) {
       await showDialog<Null>(
         context: context,
-        builder: (ctx) => AlertDialog(
-          content: Text('Something went wrong!!'),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-              child: Text('Okay'),
-            )
-          ],
-        ),
+        builder: (ctx) => ErrorDialogWidget(ctx),
       );
     } finally {
       setState(() {
