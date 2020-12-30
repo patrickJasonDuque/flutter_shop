@@ -29,10 +29,11 @@ class Cart with ChangeNotifier {
       _items.putIfAbsent(
         productId,
         () => CartItem(
-            title: title,
-            id: new DateTime.now().toIso8601String(),
-            price: price,
-            quantity: 1),
+          title: title,
+          id: new DateTime.now().toIso8601String(),
+          price: price,
+          quantity: 1,
+        ),
       );
     }
     notifyListeners();

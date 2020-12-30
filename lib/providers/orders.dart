@@ -11,14 +11,66 @@ class Order with ChangeNotifier {
 
   List<OrderItem> get orders => [..._orders];
 
-  void addOrder(List<CartItem> cartProducts, double total) {
-    _orders.insert(
-        0,
-        OrderItem(
-            id: DateTime.now().toString(),
-            amount: total,
-            dateTime: DateTime.now(),
-            products: cartProducts));
-    notifyListeners();
+  Future<void> getOrders() async {
+    try {
+      var response = await http
+          .get('https://flutter-test-f6e94.firebaseio.com/orders.json');
+      var body = jsonDecode(response.body);
+      if (body == null) {
+        return;
+      }
+      List<OrderItem> newOrders = [];
+      body.forEach((key, value) {
+        newOrders.add(OrderItem(
+          id: key,
+          amount: value['amount'],
+          dateTime: DateTime.parse(value['dateTime']),
+          products: (value['products'] as List<dynamic>)
+              .map(
+                (item) => CartItem(
+                  id: item['id'],
+                  price: item['price'],
+                  quantity: item['quantity'],
+                  title: item['title'],
+                ),
+              )
+              .toList(),
+        ));
+      });
+      _orders = newOrders;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+    try {
+      DateTime timestamp = DateTime.now();
+      var response = await http.post(
+        'https://flutter-test-f6e94.firebaseio.com/orders.json',
+        body: jsonEncode({
+          'amount': total,
+          'dateTime': timestamp.toIso8601String(),
+          'products': cartProducts
+              .map((cartItem) => {
+                    'id': cartItem.id,
+                    'quantity': cartItem.quantity,
+                    'price': cartItem.price,
+                    'title': cartItem.title
+                  })
+              .toList()
+        }),
+      );
+
+      _orders.add(OrderItem(
+          id: jsonDecode(response.body)['name'],
+          amount: total,
+          dateTime: DateTime.now(),
+          products: cartProducts));
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
   }
 }

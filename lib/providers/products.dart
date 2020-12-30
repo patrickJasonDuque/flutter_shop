@@ -95,6 +95,9 @@ class Products with ChangeNotifier {
       final response = await http.get(_baseUrl + url);
       final body = jsonDecode(response.body);
       final List<Product> newProducts = [];
+      if (body == null) {
+        return;
+      }
       body.forEach((key, value) => newProducts.add(
             Product(
                 description: value['description'],
@@ -105,7 +108,6 @@ class Products with ChangeNotifier {
                 id: key),
           ));
       _items = newProducts;
-      print('fetched data');
       notifyListeners();
     } catch (error) {
       print('error' + error);
